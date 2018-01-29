@@ -14,9 +14,10 @@ class ViewController: UIViewController {
 	let scrollView = AutoKeyboardScrollView()
 	var views = [String: UIView]()
 	
-	override func preferredStatusBarStyle() -> UIStatusBarStyle {
-		return .LightContent
-	}
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
+  }
+
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -30,9 +31,9 @@ class ViewController: UIViewController {
 		
 		scrollView.translatesAutoresizingMaskIntoConstraints = false
 		scrollView.backgroundColor = UIColor(red:0.31, green:0.66, blue:0.42, alpha:1)
-		scrollView.userInteractionEnabled = true
+    scrollView.isUserInteractionEnabled = true
 		scrollView.bounces = true
-		scrollView.scrollEnabled = true
+    scrollView.isScrollEnabled = true
 		
 		scrollView.textFieldMargin = 18
 		
@@ -40,7 +41,7 @@ class ViewController: UIViewController {
 		
 		// NOTE: Add subview on contentView!
 		for i in 0 ..< 8 {
-			scrollView.contentView.addSubview(newTextField(i))
+      scrollView.contentView.addSubview(newTextField(id: i))
 		}
 		
 		// A text field on a subview
@@ -49,34 +50,34 @@ class ViewController: UIViewController {
 		dummyView.translatesAutoresizingMaskIntoConstraints = false
 		views["dummyView"] = dummyView
 		
-		let textField8 = newTextField(8)
+    let textField8 = newTextField(id: 8)
 		textField8.placeholder = "Text filed on a deeper subview"
 		dummyView.addSubview(textField8)
 		scrollView.contentView.addSubview(dummyView)
-        scrollView.setTextMargin(100, forTextField: textField8)
+    scrollView.setTextMargin(100, forTextField: textField8)
 	}
 	
 	private func setupConstraints() {
 		var constraints = [NSLayoutConstraint]()
 		
 		// Constraints for scorllView
-		constraints += NSLayoutConstraint.constraintsWithVisualFormat("H:|[scrollView]|", options: [], metrics: nil, views: views)
-		constraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|[scrollView]|", options: [], metrics: nil, views: views)
+    constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|[scrollView]|", options: [], metrics: nil, views: views)
+    constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|[scrollView]|", options: [], metrics: nil, views: views)
 		
 		// Center width constraints for text fields
 		for i in 0 ..< 8 {
-			addWidthCenterXConstraintsForView(views["textField\(i)"]!, width: 200)
+      addWidthCenterXConstraintsForView(view: views["textField\(i)"]!, width: 200)
 		}
 		
 		
 		// Constraints for dummy subview and textfield
-		addWidthCenterXConstraintsForView(views["dummyView"]!, width: 280)
-		constraints += NSLayoutConstraint.constraintsWithVisualFormat("H:|-[textField8]-|", options: [], metrics: nil, views: views)
-		constraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-[textField8]-|", options: [], metrics: nil, views: views)
+    addWidthCenterXConstraintsForView(view: views["dummyView"]!, width: 280)
+    constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-[textField8]-|", options: [], metrics: nil, views: views)
+    constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[textField8]-|", options: [], metrics: nil, views: views)
 		
-		constraints += NSLayoutConstraint.constraintsWithVisualFormat("V:|-(100)-[textField0(30)]-(20)-[textField1(30)]-(20)-[textField2(30)]-(20)-[textField3(30)]-(20)-[textField4(30)]-(20)-[textField5(30)]-(20)-[textField6(30)]-(20)-[textField7(30)]-(20)-[dummyView(50)]-(150)-|", options: [], metrics: nil, views: views)
+    constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-(100)-[textField0(30)]-(20)-[textField1(30)]-(20)-[textField2(30)]-(20)-[textField3(30)]-(20)-[textField4(30)]-(20)-[textField5(30)]-(20)-[textField6(30)]-(20)-[textField7(30)]-(20)-[dummyView(50)]-(150)-|", options: [], metrics: nil, views: views)
 		
-		NSLayoutConstraint.activateConstraints(constraints)
+    NSLayoutConstraint.activate(constraints)
 	}
 	
 	
@@ -85,8 +86,8 @@ class ViewController: UIViewController {
 		let textField = UITextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
 		textField.placeholder = "Type here..."
-		textField.textAlignment = NSTextAlignment.Center
-		textField.backgroundColor = UIColor.whiteColor()
+    textField.textAlignment = NSTextAlignment.center
+		textField.backgroundColor = UIColor.white
 		
 		views["textField\(id)"] = textField
 		
@@ -94,7 +95,7 @@ class ViewController: UIViewController {
 	}
 	
 	private func addWidthCenterXConstraintsForView(view: UIView, width: CGFloat) {
-		view.addConstraint(NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Width, multiplier: 0, constant: width))
-		view.superview!.addConstraint(NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: view.superview!, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0))
+    view.addConstraint(NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.width, multiplier: 0, constant: width))
+		view.superview!.addConstraint(NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: view.superview!, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
 	}
 }
